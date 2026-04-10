@@ -1,4 +1,4 @@
-* Make sure the evil subdomain has some kind of security embedded in it.
+* Make sure the evil directory has some kind of security embedded in it.
 
 
 * Something weird has been going on with the market's server. Check to make sure it didn't get breached (heard that hackers can hide in subdirectories)
