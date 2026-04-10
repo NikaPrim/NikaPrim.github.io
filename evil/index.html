@@ -1,0 +1,923 @@
+<!-- CREDIT TO https://codepen.io/HASSAM-the-decoder/pen/vYoxMaO -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Variety Store Marketplace</title>
+<link rel="icon" type="image/x-icon" href="/skull.png">
+    <style>
+        :root {
+            --primary-color: #3b0b15;
+            --secondary-color: #2c3e50;
+            --background-color: #ecf0f1;
+            --text-color: #333;
+            --card-background: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .hero {
+            background-image: url('./hacked.png');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .featured-products, .all-products {
+            padding: 4rem 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            height: 150px;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        #cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        #cart-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .cart-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #cart-items {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #cart-items li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #cart-total {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+
+        .block {
+	background: #fff;
+	width: 504px;
+	padding: 1rem;
+	background: #ffffff;
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 2px 1px rgba(0, 0, 0, 0.06),
+		0px 1px 1px rgba(0, 0, 0, 0.08);
+	border-radius: 8px;
+	display: block;
+	&-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 16px;
+		.title {
+			display: flex;
+			align-items: flex-start;
+			.tag {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-left: 4px;
+				background: #f7f7f7;
+				color: #1c1c1c;
+				text-align: center;
+				padding: 0 4px;
+				letter-spacing: 0.04em;
+				text-transform: uppercase;
+				font-weight: 500;
+				font-size: 10px;
+				line-height: 16px;
+				border: 1px solid #e8e8e8;
+				border-radius: 96px;
+			}
+		}
+	}
+}
+.writing {
+	background: #ffffff;
+	border: 1px solid #e8e8e8;
+	border-radius: 8px;
+	overflow: hidden;
+	margin-bottom: 24px;
+	padding: 12px;
+	.textarea {
+		width: 100%;
+		font-family: "Inter";
+		color: #585757;
+		height: 50px;
+		overflow-y: auto;
+		appearance: none;
+		border: 0;
+		outline: 0;
+		resize: none;
+		font-size: 16px;
+		line-height: 24px;
+	}
+	&:focus-within {
+		border: 1px solid #0085ff;
+		box-shadow: 0px 0px 2px 2px rgba(0, 133, 255, 0.15);
+	}
+	.footer {
+		margin-top: 12px;
+		padding-top: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-top: 1px solid #e8e8e8;
+		.text-format {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+	}
+}
+.comment {
+	display: grid;
+	gap: 14px;
+	.user-banner {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.user {
+			gap: 8px;
+			align-items: center;
+			display: flex;
+			.avatar {
+				height: 32px;
+				width: 32px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 1px solid transparent;
+				position: relative;
+				border-radius: 100px;
+				font-weight: 500;
+				font-size: 13px;
+				line-height: 20px;
+				img {
+					max-width: 100%;
+					border-radius: 50%;
+				}
+				.stat {
+					display: flex;
+					position: absolute;
+					right: -2px;
+					bottom: -2px;
+					display: block;
+					width: 12px;
+					height: 12px;
+					z-index: 9;
+					border: 2px solid #ffffff;
+					border-radius: 100px;
+					&.green {
+						background: #00ba34;
+					}
+					&.grey {
+						background: #969696;
+					}
+				}
+			}
+		}
+	}
+	.footer {
+		gap: 12px;
+		display: flex;
+		align-items: center;
+		.reactions {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+		.divider {
+			height: 12px;
+			width: 1px;
+			background: #e8e8e8;
+		}
+	}
+	&:not(.comment:first-child) {
+		padding-bottom: 12px;
+		margin-bottom: 12px;
+		border-bottom: 1px solid #e8e8e8;
+	}
+	& + & {
+		padding-top: 12px;
+	}
+	&.reply {
+		.user-banner,
+		.content,
+		.footer {
+			margin-left: 32px;
+		}
+	}
+}
+.group-radio {
+	position: relative;
+	display: flex;
+	user-select: none;
+	align-items: stretch;
+	.button-radio {
+		box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.06);
+		label {
+			cursor: pointer;
+			padding: 4px 8px;
+			font-weight: 500;
+			font-size: 14px;
+			display: flex;
+			height: 28px;
+			align-items: center;
+			line-height: 28px;
+			transition: 0.2s ease;
+		}
+		&:first-child {
+			border-top-left-radius: 8px;
+			border-bottom-left-radius: 8px;
+			border-left: 1px solid #e8e8e8;
+			border-top: 1px solid #e8e8e8;
+			border-bottom: 1px solid #e8e8e8;
+		}
+		&:last-child {
+			border-top-right-radius: 8px;
+			border-right: 1px solid #e8e8e8;
+			border-top: 1px solid #e8e8e8;
+			border-bottom: 1px solid #e8e8e8;
+			border-bottom-right-radius: 8px;
+		}
+		input[type="radio"] {
+			display: none;
+			&:checked + label {
+				background: #f7f7f7;
+			}
+		}
+	}
+	.divider {
+		width: 1px;
+		background: #e8e8e8;
+	}
+}
+h5 {
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 24px;
+	color: #1c1c1c;
+	letter-spacing: 0em;
+	text-align: left;
+}
+.btn {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	display: flex;
+	font: inherit;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: #1c1c1c;
+	transition: 0.2s ease;
+	i {
+		color: #969696;
+		font-size: 18px;
+		transition: 0.15s ease-in-out;
+	}
+	&.primary {
+		min-width: 64px;
+		padding: 8px 12px;
+		height: 40px;
+		color: #fff;
+		display: inline-flex;
+		background: #0085ff;
+		box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 2px 1px rgba(0, 0, 0, 0.06),
+			0px 1px 1px rgba(0, 0, 0, 0.08);
+		border-radius: 8px;
+		&:hover {
+			background: lighten(#0085ff, 10%);
+		}
+	}
+	&:hover {
+		i {
+			opacity: 0.7;
+		}
+	}
+	outline: none;
+	img {
+		max-width: 18px;
+		height: auto;
+	}
+	&.react {
+		padding: 4px 8px 4px 4px;
+		background: #f7f7f7;
+		border: 1px solid #e8e8e8;
+		border-radius: 8px;
+		gap: 4px;
+		&:hover {
+			background-color: #eee;
+		}
+	}
+	&.dropdown {
+		display: flex;
+		cursor: pointer;
+		border-radius: 50%;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		width: 26px;
+		height: 26px;
+		&:hover {
+			background-color: #eee;
+		}
+	}
+}
+p {
+	line-height: 24px;
+	a.tagged-user {
+		display: inline-flex;
+		padding: 2px 8px;
+		background: #e5f3ff;
+		border-radius: 256px;
+		color: #0085ff;
+	}
+}
+.is-mute {
+	font-weight: 400;
+	font-size: 13px;
+	line-height: 20px;
+	color: #969696;
+}
+a {
+	font-weight: 500;
+	font-size: 13px;
+	line-height: 20px;
+	color: #1c1c1c;
+	text-decoration: none;
+	transition: opacity 0.15s ease-in-out;
+	&:hover {
+		opacity: 0.7;
+	}
+}
+h2 {
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 28px;
+	color: #1c1c1c;
+}
+* {
+	box-sizing: border-box;
+}
+.load {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	span {
+		display: flex;
+		align-items: center;
+		font-weight: 400;
+		font-size: 13px;
+		line-height: 20px;
+		color: #969696;
+		i {
+			margin-right: 6px;
+		}
+	}
+}
+.group-button {
+	display: flex;
+	gap: 16px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Fendi's Sidehustle</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#featured">Featured</a></li>
+                <li><a href="#products">Products</a></li>
+                <li id="cart-icon">🛒 <span id="cart-count">0</span></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Fendi's Sidehustle</h1>
+                <p>Dozens of satisfied customers!</p>
+                <h1>[!] EXPERIENCING ISSUES WITH PAYMENT PROCESSING [!]</h1>
+            </div>
+        </section>
+
+        <section id="featured" class="featured-products">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="https://atlas-content-cdn.pixelsquid.com/stock-images/apple-airpods-right-bud-earphones-9GdqBBB-600.jpg" alt="Product 1" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Right AirPod</h3>
+                            <p class="product-price">$59.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Right Airpod', 59.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-HWKuYtfwSU2Nc9__INEmGf_a0p961JF8_Q&s" alt="Product 2" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Leather Wallet (misc. change, library card)</h3>
+                            <p class="product-price">$39.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Leather Wallet', 39.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://atlas-content-cdn.pixelsquid.com/assets/892226971545638088/jpeg-600/G03.jpg?modifiedAt=1" alt="Product 3" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Pills</h3>
+                            <p class="product-price">$79.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Pills', 79.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="all-products">
+            <div class="container">
+                <h2>All Products</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="https://media.ed.edmunds-media.com/non-make/cartechnology/cartechnology_102423_500.jpg" alt="Product 4" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Catalytic Converter</h3>
+                            <p class="product-price">$129.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Catalytic Converter', 129.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://shop.tcdirect.co.za/content/images/thumbs/61a5e65ba242103de4e88a93_3-tc-direct-pens_550.png" alt="Product 5" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Assortment of Pens</h3>
+                            <p class="product-price">$49.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Assortment of Pens', 49.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://cdn1-shop.mikroe.com/img/product/rfid-card-125khz-tag/rfid-card-125khz-tag-large_default-12x.jpg" alt="Product 6" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">RFID Access Card</h3>
+                            <p class="product-price">$89.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Security Cards', 89.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnFP_aAeet6oazlSAFuP_popLozMjcGqxhtw&s" alt="Product 1" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Macaroni (1 count)</h3>
+                            <p class="product-price">$59.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Macaroni', 59.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-HWKuYtfwSU2Nc9__INEmGf_a0p961JF8_Q&s" alt="Product 2" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Leather Wallet</h3>
+                            <p class="product-price">$39.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Leather Wallet', 39.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://atlas-content-cdn.pixelsquid.com/assets/892226971545638088/jpeg-600/G03.jpg?modifiedAt=1" alt="Product 3" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Pills</h3>
+                            <p class="product-price">$79.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Pills', 79.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://www.nicepng.com/png/detail/900-9004649_extinguisher-png-background-image-first-alert-fire-extinguisher.png" alt="Product 3" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">Fire Extinguisher</h3>
+                            <p class="product-price">$99.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Fire Extinguisher', 99.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwTyA5OxcRQwd7bCiULjrjOzlTVJ5zLa478w&s" alt="Product 3" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">"Pearl Earring" Frame</h3>
+                            <p class="product-price">$159.99</p>
+                            <button class="add-to-cart" onclick="addToCart('Girl with a Pearl Earring Frame', 79.99)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <center>
+            <div class="block">
+	<div class="block-header">
+		<div class="title">
+			<h2>Comments</h2>
+			<div class="tag">3</div>
+		</div>
+	</div>
+	<div class="comment">
+		<div class="user-banner">
+			<div class="user">
+				
+                <div class="avatar" style="background-color:#fff5e9;border-color:#ffe0bd; color:#9053e4">
+                    1337
+                    <span class="stat green"></span>
+                </div>
+				<h5>__1337__buyer</h5>
+			</div>
+			<button class="btn dropdown"><i class="ri-more-line"></i></button>
+		</div>
+		<div class="content">
+			<p>Is the market down? I can't place new orders and didn't get what I paid for, what's going on? I got a text saying I needed to pay a toll fee, did the government take away my Internet access?</p>
+		</div>
+		<div class="footer">
+			<button class="btn"><i class="ri-emotion-line"></i></button>
+			<div class="divider"></div>
+			<a href="#">Reply</a>
+			<div class="divider"></div>
+			<span class="is-mute">6 hours</span>
+		</div>
+	</div>
+	<div>
+		<div class="comment">
+			<div class="user-banner">
+				<div class="user">
+					<div class="avatar" style="background-color:#fff5e9;border-color:#ffe0bd; color:#F98600">
+						VB
+						<span class="stat green"></span>
+					</div>
+					<h5>Verified Buyer</h5>
+				</div>
+				<button class="btn dropdown"><i class="ri-more-line"></i></button>
+			</div>
+			<div class="content">
+				<p>Just so you know I'm not kidding around Fendi, I'm sending this here. I know that you know who I am. Unless you do what I asked you to, I'll tell our mutual employers about your little addiction. In fact, I'll even throw in a few racks and some change in exchange for your help and silence.</p>
+			</div>
+			<div class="footer">
+				<button class="btn"><i class="ri-emotion-line"></i></button>
+				<div class="divider"></div>
+				<a href="#">Reply</a>
+				<div class="divider"></div>
+				<span class="is-mute">2 min</span>
+			</div>
+		</div>
+		<div class="reply comment">
+			<div class="user-banner">
+				<div class="user">
+					<div class="avatar" style="background-color:#fff5e9;border-color:#ffe0bd; color:#4ce384">
+						FT
+						<span class="stat green"></span>
+					</div>
+					<h5>Fendi Tamil</h5>
+				</div>
+				<button class="btn dropdown"><i class="ri-more-line"></i></button>
+			</div>
+			<div class="content">
+				<p><a href="#" class="tagged-user">@Verified Buyer</a> thanks for your comment. I'll contact you shortly.</p>
+			</div>
+			<div class="footer">
+				<button class="btn"><i class="ri-emotion-line"></i></button>
+				<div class="reactions">
+					<button class="btn react"><img src="https://cdn-0.emojis.wiki/emoji-pics/apple/smiling-face-with-heart-eyes-apple.png" alt="">1</button>
+				</div>
+				<div class="divider"></div>
+				<a href="#">Reply</a>
+				<div class="divider"></div>
+				<span class="is-mute">18 sec</span>
+			</div>
+		</div>
+	</div>
+	<div class="load">
+		<span><i class="ri-refresh-line"></i>Loading</span>
+	</div>
+</div>
+</center>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Fendi's Sidehustle. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="cart-modal">
+        <div class="cart-content">
+            <span class="close">&times;</span>
+            <h2>Your Cart</h2>
+            <ul id="cart-items"></ul>
+            <p id="cart-total">Total: $0.00</p>
+ <a href="./payment"><button type="button">Proceed to Payment Details</button></a>
+        </div>
+    </div>
+
+    <script>
+        const cart = [];
+        const cartIcon = document.getElementById('cart-icon');
+        const cartCount = document.getElementById('cart-count');
+        const cartModal = document.getElementById('cart-modal');
+        const closeBtn = document.getElementsByClassName('close')[0];
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            updateCartCount();
+            alert(`${productName} has been added to your cart!`);
+        }
+
+        function updateCartCount() {
+            cartCount.textContent = cart.length;
+        }
+
+        function updateCartModal() {
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+            cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        cartIcon.onclick = function() {
+            updateCartModal();
+            cartModal.style.display = 'block';
+        }
+
+        closeBtn.onclick = function() {
+            cartModal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == cartModal) {
+                cartModal.style.display = 'none';
+            }
+        }
+
+function checkJwt() {
+  let name = "auth" + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+const base64Url = c.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+if(JSON.parse(jsonPayload).role !== "verified_buyer") {
+    alert("<=== JWT COOKIE ERROR ===> \nYour role is not verified_buyer, you cannot access this page. Role is only given out to trusted contacts.");
+    window.location.href = "../";
+}
+    }
+  }
+}
+checkJwt();
+    </script>
+</body>
+</html>

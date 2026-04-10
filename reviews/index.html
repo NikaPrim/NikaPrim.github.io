@@ -1,0 +1,1165 @@
+<!-- CREDIT TO https://codepen.io/CodeWithMalayia/pen/ByNBMPW -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fendi Reviews Food</title>
+  <style>
+    /* Bakery-themed general styles */
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: #fff8f0;
+  color: #6b4c3b;
+  line-height: 1.6;
+}
+
+header {
+  background: #fcd6d6;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(255, 182, 193, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  margin: 0;
+  color: #a34f4f;
+  text-shadow: 1px 1px 3px #fff0f5;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  font-weight: bold;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #a34f4f;
+  padding: 8px 15px;
+  border-radius: 12px;
+  background: #ffe6e6;
+  box-shadow: 2px 2px 5px rgba(179, 101, 101, 0.4);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #a34f4f;
+  color: #fff8f0;
+  box-shadow: 2px 2px 10px #a34f4f;
+}
+
+/* Main content container */
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px 40px;
+  background: #fff0f5;
+  border-radius: 25px;
+  box-shadow: 0 8px 18px rgba(255, 182, 193, 0.4);
+}
+
+/* Section headings */
+section h2 {
+  color: #b34f4f;
+  border-bottom: 3px solid #fcbad3;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 2rem;
+  font-family: 'Lucida Handwriting', cursive;
+}
+
+/* Paragraph styling */
+p {
+  font-size: 1.1rem;
+  color: #6b4c3b;
+}
+
+/* Recipe card styling */
+.recipe-card {
+  background-color: #fff0f5;
+  padding: 20px 25px;
+  border: 2px solid #fcbad3;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+  margin-top: 20px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.recipe-card h3 {
+  color: #d65c7a;
+  margin-bottom: 15px;
+  font-family: 'Lucida Handwriting', cursive;
+  font-size: 1.8rem;
+}
+
+.recipe-card h4 {
+  color: #a34f4f;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.recipe-card ul, 
+.recipe-card ol {
+  margin-left: 25px;
+  margin-bottom: 15px;
+}
+
+.recipe-card li {
+  margin-bottom: 6px;
+}
+
+/* Food Groups App styling */
+#food-app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  background: #fff0f5;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
+}
+
+.food-app-row {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.food-app-scroll {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+#food-items .food-item {
+  flex: 0 0 auto;
+  background-color: #ffdae0;
+  border-radius: 15px;
+  padding: 15px 20px;
+  font-size: 2rem;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(179, 101, 101, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+#food-items .food-item:active {
+  cursor: grabbing;
+  background-color: #fcbad3;
+}
+
+#drop-zones {
+  justify-content: space-around;
+}
+
+.app-drop {
+  flex: 1;
+  min-width: 120px;
+  background-color: #ffe6e6;
+  border: 2px dashed #fcbad3;
+  border-radius: 20px;
+  padding: 25px 15px;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #a34f4f;
+  font-weight: 700;
+  box-shadow: inset 0 0 10px #ffd6de;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.app-drop.drag-over {
+  background-color: #fcbad3;
+  color: #fff8f0;
+  border-color: #a34f4f;
+}
+
+/* Game result */
+#game-result {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #a34f4f;
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* Baking Quiz styling */
+#baking-quiz {
+  background: #fff0f5;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(255, 182, 193, 0.4);
+  margin-top: 25px;
+}
+
+#quiz-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+#question-container {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #a34f4f;
+}
+
+#answers-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+#answers-list li {
+  background-color: #ffe6e6;
+  border-radius: 15px;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(179, 101, 101, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+#answers-list li:hover,
+#answers-list li.selected {
+  background-color: #fcbad3;
+  color: #fff8f0;
+}
+
+#submit-btn {
+  background-color: #a34f4f;
+  color: #fff8f0;
+  border: none;
+  padding: 12px 25px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#submit-btn:disabled {
+  background-color: #dca3a3;
+  cursor: not-allowed;
+}
+
+#submit-btn:hover:not(:disabled) {
+  background-color: #d65c7a;
+}
+
+/* Favorites & Challenges */
+#favorites, #challenges {
+  background: #fff0f5;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 6px 14px rgba(255, 182, 193, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #food-app-container {
+    padding: 10px;
+  }
+
+  .app-drop {
+    min-width: 100px;
+    padding: 15px 10px;
+    font-size: 1.1rem;
+  }
+}
+
+body {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	background: #fcd6d6;
+}
+
+.wrapper {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.wrapper .nav {
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #3D2117;
+	text-align: center;
+	padding: 10px;
+}
+
+.wrapper .nav ul {
+	margin: 0;
+	padding: 0;
+}
+
+.wrapper .nav ul li {
+	display: inline;
+}
+
+.wrapper .nav ul li a {
+	text-decoration: none;
+	padding: .5em 1.5em .5em 1.5em;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	color: #FFF;
+	border-radius: .15em;
+	transition: all .1s ease;
+	box-sizing: border-box;
+	display: inline-block;
+	-webkit-border-radius: .2em;
+	        border-radius: .2em;
+}
+
+.wrapper .nav ul li a:hover {
+	background-color: #FEFCE8;
+	color: #C84127;
+}
+
+.wrapper .nav ul li .login {
+	color: #81a90b;
+	transition: all .1s ease;
+}
+
+.wrapper .nav ul li .login:hover {
+	background-color: #81a90b;
+	color: #ffffff;
+}
+
+.wrapper .content {
+	width: 80%;
+	height: auto;
+	line-height: 1.6em;
+	margin: 0 auto;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	text-align: center;
+	padding: 0 0 20px 0;
+}
+
+.wrapper .content .column {
+	width: 31%;
+	height: auto;
+	display: inline-block;
+	padding: 0px;
+	box-sizing: border-box;
+	background-color: #FEFCE8;
+	border: thin solid #fcd6d6;
+	margin: 0 auto;
+	margin: 2% 0 0 0;
+}
+
+.wrapper .content .column p {
+	margin: 0;
+	padding: 0 25px;
+	text-align: center;
+}
+.wrapper .content .column:hover{
+	box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.4);
+}
+ .content .column a {
+	text-decoration: none;
+	padding: 2px 10px;
+	font-size: 1em;
+	color: #383838;
+	display: inline-block;
+	margin: 10px 0 15px 0;
+	border-radius: .2em;
+	box-sizing: border-box;
+	text-align: center;
+ 	font-family: 'Open Sans', sans-serif;
+ 	transition: all .1s ease;
+}
+
+.content .column a:hover {
+	background-color: #C84127;
+	color: #fff;
+	box-shadow:1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.wrapper .content .column img {
+	width: 100%;
+	height: 150px;
+	padding: 0 0 15px 0;
+	-webkit-background-size: cover;
+	     -o-background-size: cover;
+	        background-size: cover;
+}
+.wrapper .content .second-column {
+	margin: 0 1.5%;
+}
+.header {
+	width: 100%;
+	height: 200px;
+	-webkit-background-size: cover;
+	     -o-background-size: cover;
+	        background-size: cover;
+}
+.header h2{
+	padding: 0;
+	margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 200;
+	line-height:2.5em;
+	text-align: center;
+	color: #f7f7f7;
+	font-size: 2.2em;
+}
+.header h3 {
+	padding: 0;
+	margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 200;
+	line-height: 1.5em;
+	text-align: center;
+	color: #f7f7f7;
+	font-size: 1.2em;
+}
+.overlay {
+  background: rgba(0,0,0,.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:100%;
+}
+
+.modal {
+  visibility: hidden;
+}
+
+.modal__content{
+  background: #FEFCE8;
+  border: 1em solid #a34f4f;
+  border-radius:2%;
+  width: 32rem;
+  position: absolute;
+  left: 50%;
+  margin-left: -16rem;
+  top: 6rem;
+  min-height: 32rem;
+  box-shadow:1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.modal__content h1 {
+  margin: 0;
+  padding: 0;
+  line-height: 5em;
+  text-align: center;
+  display: block;
+}
+.close_modal {
+  position: absolute;
+  right:5%;
+  top: 5%;
+  text-decoration: none;
+  font-size:1.2em;
+  cursor:pointer;
+  color:#3D2117;
+}
+.entypo-cancel-circled:hover{
+	color:#C84127;
+	text-shadow:1px 1px 1px rgba(0,0,0,0.5);
+}
+.show_modal {
+  visibility: visible;
+}
+
+.mod_transition {
+	-webkit-transform: scale(0.7);
+	-moz-transform: scale(0.7);
+	-ms-transform: scale(0.7);
+	transform: scale(0.7);
+	opacity: 0;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	
+}
+
+.show_modal .mod_transition {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+.modal__content ul{
+	margin:5% auto;
+	padding:1em;
+}
+.modal__content li{
+	display:inline-block;
+	color:#67C5C2;
+	cursor:pointer;
+	font-size:1.5em;
+}
+.modal__content li[class*=entypo-]:hover{
+	color:#C84127;
+	text-shadow:1px 1px 1px rgba(0,0,0,0.5);
+}
+.byline{
+	line-height:1.5;
+}
+#author{
+	text-decoration:none;
+	cursor:pointer;
+}
+#author:hover{
+	text-decoration:underline;
+	text-decoration-style:dashed;
+	-moz-text-decoration-style:dashed;
+}
+#large {
+    display: none;
+	position: absolute;
+	background: transparent;
+	width:50%;
+	height:65%;
+	text-align:center;
+	z-index: 10;
+	color:#C84127;
+}
+#background{
+    display: none;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background:rgb(0,0,0);
+    z-index: 1;
+}
+
+.new-items{
+	margin: 0 auto;
+	width: 100%;
+	height: 5.5em;
+	position: relative;
+	background:#FEFCE8;
+	text-align:center;
+	font-family: 'Roboto';
+}
+.new-items p{
+	width:50%;
+	margin:0 30%;
+	padding:1em;
+}
+.new-items .close{
+  border: none;
+  display: block;
+  float:right;
+  margin-right:5%;
+  margin-top:1%;
+  background:  #fcd6d6;
+  height: 3em;
+  width: 7em;
+  text-align: center;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  color: #81a90b;
+  transition: all .1s ease;
+}
+.new-items .close:hover{
+	background-color: #81a90b;
+	color: #ffffff;
+}
+
+
+.our-mission{
+	margin: 0 auto;
+	width: 100%;
+	height: 6.7em;
+	position: relative;
+	background:#FEFCE8;
+	text-align:center;
+	font-family: 'Roboto';
+}
+.our-mission p{
+	width:50%;
+	margin:0 30%;
+	padding:1em;
+}
+.our-mission .mission-close{
+  border: none;
+  display: block;
+  float:right;
+  margin-right:5%;
+  margin-top:3%;
+  background:  #fcd6d6;
+  height: 3em;
+  width: 7em;
+  text-align: center;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  color: #81a90b;
+  transition: all .1s ease;
+}
+.our-mission .mission-close:hover{
+	background-color: #81a90b;
+	color: #ffffff;
+}
+@media (max-width : 48rem) {
+
+  .modal__content {
+  	top: 0;
+  	left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .close_modal {
+    display: block;
+	right:0;
+  }
+  
+  .mod_transition {
+    -webkit-transform: translateX(-0) translateY(150%);
+    -moz-transform: translateX(-0) translateY(150%);
+    -ms-transform: translateX(-0) translateY(150%);
+    transform: translateX(-0) translateY(150%);
+  }
+  
+}
+
+
+/* 
+	Media for screen size = 1060px
+*/
+
+@media only screen and (max-width:1060px) {
+
+	.wrapper .nav ul li a {
+		margin: 0 5px;
+	}
+
+	.wrapper .content {
+		width: auto;
+		margin: 0 auto;
+		height: auto;
+		display: block;
+		float: left;
+		padding: 20px 20px;
+	}
+
+	.wrapper .content .column {
+		width: 48.5%;
+		box-sizing: border-box;
+		height: auto;
+		display: block;
+		float: left;
+		margin: 1% .7% 0 .8%;
+		text-align: center;
+	}
+
+	.wrapper .content .column a {
+		padding: 2px 12px;
+	}
+
+
+	.wrapper .content .column p {
+		margin: 0;
+		padding: 0 25px;
+	}
+
+	.wrapper .content .last-column img {
+		width: 100%;
+		border-radius: .2em;
+	}
+
+	.header h2, .header h3{
+		line-height:2em;
+	}
+}
+@media only screen and (max-width:980px){
+.contact form{
+		width:95%;
+	}
+	.sign_in form{
+		width:95%;
+	}
+	.header h2, .header h3{
+		line-height:2em;
+	}
+}
+@media only screen and (max-width:850px){
+	.contact form{
+		width:90%;
+	}
+	.sign_in form{
+		width:90%;
+	}
+	.header h2, .header h3{
+		line-height:1.5em;
+	}
+}
+/* 
+	Media for screen size = 640px 
+*/
+
+@media only screen and (max-width:645px) {
+	
+	.wrapper .nav {
+		padding: 8px 0;
+		border-bottom: thin solid #efefef;
+	}
+
+	.wrapper .nav ul li a {
+		display: block;
+		padding: 8px 0;
+		border-radius: 0;
+		margin: 0 0;
+	}
+
+	.wrapper .nav ul li .login {
+		border: 0;
+		padding-left: 0;
+		background: none;
+	}
+
+	.wrapper .content {
+		width: auto;
+		height: auto;
+		display: block;
+		float: left;
+		margin: 0 auto;
+	}
+
+	.wrapper .content .column {
+		width: 100%;
+		box-sizing: border-box;
+		height: auto;
+		display: block;
+		float: left;
+		padding: 0 0 8px 0;
+		margin-top: 1%;
+	}
+
+	.wrapper .content .column p {
+		padding: 0 20px;
+	}
+
+	.wrapper .content .first-column {
+		margin: 5% 0 0 0;
+	}
+
+	.wrapper .content .second-column {
+		margin: 5% 0 0 0;
+	}
+
+	.wrapper .content .last-column {
+		margin: 5% 0 0 0;
+	}
+
+	.wrapper .content .column a {
+		width: 100%;
+		text-align: center;
+		text-decoration: none;
+		padding: 5px 0;
+		font-family: 'Open Sans', sans-serif;
+		font-size: 11px;
+		margin: 8px 0 0 0;
+		border-radius: 0;
+		transition: all .1s ease;
+	}
+
+
+	.header {
+		display: none;
+	}
+	.new-items{
+		height:8em;
+	}
+	.our-mission{
+		height:10em;
+	}
+	.contact form{
+		width:95%;
+	}
+	.sign_in form{
+		width:95%;
+	}
+
+	header {
+  background: #fcd6d6;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(255, 182, 193, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  margin: 0;
+  color: #a34f4f;
+  text-shadow: 1px 1px 3px #fff0f5;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  font-weight: bold;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #a34f4f;
+  padding: 8px 15px;
+  border-radius: 12px;
+  background: #ffe6e6;
+  box-shadow: 2px 2px 5px rgba(179, 101, 101, 0.4);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #a34f4f;
+  color: #fff8f0;
+  box-shadow: 2px 2px 10px #a34f4f;
+}
+
+
+}
+</style>
+</head>
+<body>
+  <header>
+    <h1>🍏 Fendi Reviews Food 🍓</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+		<li><a href="/reviews">Reviews</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+<div class="wrapper">
+			<div class="content">
+				<div class="first-column column">
+					<img src="https://cdn-icons-png.flaticon.com/512/724/724135.png" alt='image' rel='demo-1'>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#" class='extra modal-1'>Read More&hellip;</a>
+					<div class="modal modal-1">
+						<div class="overlay" id='one'></div>
+						<div class="modal__content mod_transition">
+							<div class="close_modal" id='one'>
+							<div class='entypo-cancel-circled' id='icon'></div></div>
+							<h1>Modal One</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<ul>
+								<li class="entypo-facebook-circled "></li>
+								<li class="entypo-gplus-circled"></li>
+								<li class="entypo-pinterest-circled"></li>
+								<li class="entypo-twitter-circled"></li>
+								</ul>
+								 <div class="byline">
+									<address class="author">By:  <div id="author" href="/author/john-doe">Fendi Jamil</a></address> 
+									on <time pubdate datetime="2014-08-21" title="August 21st, 2014">8/21/25</time>
+								</div>
+						</div>
+						</div>				
+					</div>
+				<div class="second-column column">
+					<img src="https://cdn-icons-png.flaticon.com/512/724/724135.png"  alt='image' rel='demo-2'>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#" class='extra modal-2'>Read More&hellip;</a>
+					<div class="modal modal-2">
+						<div class="overlay"></div>
+						<div class="modal__content mod_transition">
+							<div class="close_modal" id='two' href="#">
+							<div class='entypo-cancel-circled' id='icon'></div></div>
+							<h1>Modal Two</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<ul>
+								<li class="entypo-facebook-circled "></li>
+								<li class="entypo-gplus-circled"></li>
+								<li class="entypo-pinterest-circled"></li>
+								<li class="entypo-twitter-circled"></li>
+								</ul>
+								 <div class="byline">
+									<address class="author">By:  <div id="author" href="/author/john-doe">John Doe</a></address> 
+									on <time pubdate datetime="2014-08-21" title="August 21st, 2014">8/21/14</time>
+								</div>
+						</div>
+						</div>
+				</div>
+				<div class="last-column column">
+					<img src="https://cdn-icons-png.flaticon.com/512/724/724135.png"  alt='image' rel='demo-3'>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#" class='extra modal-3'>Read More&hellip;</a>
+					<div class='modal modal-3'>
+						<div class="overlay"></div>
+						<div class="modal__content mod_transition">
+							<div class="close_modal" id='three' href="#">
+							<div class='entypo-cancel-circled' id='icon'></div></div>
+							<h1>Modal Three</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<ul>
+								<li class="entypo-facebook-circled "></li>
+								<li class="entypo-gplus-circled"></li>
+								<li class="entypo-pinterest-circled"></li>
+								<li class="entypo-twitter-circled"></li>
+								</ul>
+								 <div class="byline">
+									<address class="author">By:  <div id="author" href="/author/john-doe">John Doe</a></address> 
+									on <time pubdate datetime="2014-08-21" title="August 21st, 2014">8/21/14</time>
+								</div>
+						</div>
+						</div>
+				</div>
+				<div class="first-column column">
+					<img src="https://cdn-icons-png.flaticon.com/512/724/724135.png" alt='image' rel='demo-4'>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#" class='extra modal-4'>Read More&hellip;</a>
+					<div class="modal modal-4">
+						<div class="overlay"></div>
+						<div class="modal__content mod_transition">
+							<div class="close_modal" id='four' href="#">
+							<div class='entypo-cancel-circled' id='icon'></div></div>
+							<h1>Modal Four</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<ul>
+								<li class="entypo-facebook-circled "></li>
+								<li class="entypo-gplus-circled"></li>
+								<li class="entypo-pinterest-circled"></li>
+								<li class="entypo-twitter-circled"></li>
+								</ul>
+								 <div class="byline">
+									<address class="author">By: <div id="author" href="/author/john-doe">John Doe</a></address> 
+									on <time pubdate datetime="2014-08-21" title="August 21st, 2014">8/21/14</time>
+								</div>
+						</div>
+						</div>
+				</div>
+				<div class="second-column column">
+					<img src="https://cdn-icons-png.flaticon.com/512/724/724135.png" alt='image' rel='demo-5'>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#" class='extra modal-5'>Read More&hellip;</a>
+					<div class="modal modal-5">
+						<div class="overlay"></div>
+						<div class="modal__content mod_transition">
+						<div class="close_modal" id='five' href="#">
+						<div class='entypo-cancel-circled' id='icon'></div></div>
+						<h1>Modal Five</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<ul>
+								<li class="entypo-facebook-circled "></li>
+								<li class="entypo-gplus-circled"></li>
+								<li class="entypo-pinterest-circled"></li>
+								<li class="entypo-twitter-circled"></li>
+								</ul>
+								 <div class="byline">
+									<address class="author">By:  <div id="author" href="/author/john-doe">John Doe</a></address> 
+									on <time pubdate datetime="2014-08-21" title="August 21st, 2014">8/21/14</time>
+								</div>
+						</div>
+						</div>
+				</div>
+				<div class="last-column column">
+					<img src="https://cdn-icons-png.flaticon.com/512/724/724135.png"  alt='image' rel='demo-6'>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#" class='extra modal-6'>Read More&hellip;</a>
+					<div class="modal modal-6">
+						<div class="overlay"></div>
+						<div class="modal__content mod_transition">
+							<div class="close_modal" id='six' href="#">
+							<div class='entypo-cancel-circled'></div></div>
+							<h1>Modal Six</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+								<ul>
+								<li class="entypo-facebook-circled "></li>
+								<li class="entypo-gplus-circled"></li>
+								<li class="entypo-pinterest-circled"></li>
+								<li class="entypo-twitter-circled"></li>
+								</ul>
+								 <div class="byline">
+									<address class="author">By: <div id="author" href="/author/john-doe">John Doe</div></address> 
+									on <time pubdate datetime="2014-08-21" title="August 21st, 2014">8/21/14</time>
+								</div>					
+						</div>
+						</div>
+				</div>
+				<div id="large"></div>
+				<div id="background"></div>
+			</div>
+  </main>
+
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+      /*LIfe's Not Complete Without Art (Expand Your Editor > ASCII Is Not Responsive ;)
+
+                      ___ _ _  _ ____
+                       |  | |\/| |___
+     ...               |  | |  | |___
+   ,'   '.               ___ ____
+  ;       ;               |  |  |
+  |       |               |  |__|
+  |       |         _ _ _ ____ ____ _  _
+  | _, ,_ |         | | | |  | |__/ |_/
+  '´ | | `'         |_|_| |__| |  \ | \_
+     | |    _    _              
+     | |  .|_|_,' |         ,--.
+     | |  |       |        :   |
+     | |  `|`'`-._|        :   |
+     | |   | |             :   |
+     | |   | |             :   |
+     | |   | |  .-------.  :   |
+     | |   | | ,|   _O  |  :   |
+     | |   | | ||_,'    |  :   |
+     | |   | | `|  TMR  |  ;...:
+     | |   | |  |       | /.--. \
+     | |  |` |  |       | |'--' |
+     '-'  `--'  '-------' '-----' 
+*/
+
+
+//open modal that matches the modal class number (modal-1, -2, etc.)associated with this trigger.
+$('.extra').click(function() {
+  var m = $(this)[0],   
+      classes = m.className.split(/\s+/);
+  for(var i = 0; i < classes.length; i++) {
+    if(classes[i].match(/modal-/)) {
+      var modalClass = classes[i];
+      $('.modal.' + modalClass).toggleClass('show_modal');
+    }
+  }
+});
+//close open modal when the modal's 'close' button is clicked
+$('.close_modal').click(function() {
+  $(this).closest('.modal').toggleClass('show_modal');
+});
+//or, close the open modal if overlay is clicked
+$( '.overlay' ).on( 'click', function() {
+  $(this).closest('.modal').toggleClass('show_modal');
+});
+//Image enlarging
+     jQuery.fn.center = function () {  //position image
+			this.css("top","25%");
+			this.css("margin-left","15%");
+        return this;
+    }
+ 
+    $(document).ready(function() {
+        $("img").click(function(e){   //show enlarged image on click
+            $("#background").css({"opacity" : ".95"})
+                            .fadeIn("slow");
+ 
+            $("#large").html("<img src='"+$(this).attr("src")+"' alt='"+$(this).attr("alt")+"' /><br/>"+$(this).attr("rel")+"")
+                       .center()
+                       .fadeIn("slow");
+ 
+            return false;
+        });
+ 
+        $(document).keypress(function(e){ //fade out image on background/image click
+            if(e.keyCode==27){
+                $("#background").fadeOut("slow");
+                $("#large").fadeOut("slow");
+            }
+        });
+ 
+        $("#background").click(function(){
+            $("#background").fadeOut("slow");
+            $("#large").fadeOut("slow");
+        });
+ 
+        $("#large").click(function(){
+            $("#background").fadeOut("slow");
+            $("#large").fadeOut("slow");
+        });
+ 
+    });
+ //menu slide down options
+$(document).ready(function(){
+$('.sign_in').hide();
+$('.contact').hide();
+$('.new-items').hide();
+$('.our-mission').hide();
+
+$('.login').click(function(){
+	$('.sign_in').slideToggle('slow');
+	   if( $('.contact').is( ':visible' ) ) $('.contact').slideUp('slow');
+	   if( $('.new-items').is( ':visible' ) ) $('.new-items').slideUp('slow');
+	   if( $('.our-mission').is( ':visible' ) ) $('.our-mission').slideUp('slow');
+});
+	$('.login-button').click(function(){
+	$('.sign_in').slideToggle('slow');
+});
+$('.contact_us').click(function(){
+	$('.contact').slideToggle('slow');
+	   if( $('.sign_in').is( ':visible' ) ) $('.sign_in').slideUp('slow');
+	   if( $('.new-items').is( ':visible' ) ) $('.new-items').slideUp('slow');
+	   if( $('.our-mission').is( ':visible' ) ) $('.our-mission').slideUp('slow');
+});
+	$('.contact-button').click(function(){
+	$('.contact').slideToggle('slow');
+});
+$('.new_items').click(function(){
+	$('.new-items').slideToggle('slow');
+	   if( $('.sign_in').is( ':visible' ) ) $('.sign_in').slideUp('slow');
+	   if( $('.contact').is( ':visible' ) ) $('.contact').slideUp('slow');
+	   if( $('.our-mission').is( ':visible' ) ) $('.our-mission').slideUp('slow');
+});
+	$('.close').click(function(){
+	$('.new-items').slideToggle('slow');
+});
+$('.our_mission').click(function(){
+	$('.our-mission').slideToggle('slow');
+	   if( $('.sign_in').is( ':visible' ) ) $('.sign_in').slideUp('slow');
+	   if( $('.new-items').is( ':visible' ) ) $('.new-items').slideUp('slow');
+	   if( $('.contact').is( ':visible' ) ) $('.contact').slideUp('slow');
+});
+	$('.mission-close').click(function(){
+	$('.our-mission').slideToggle('slow');
+});
+});
+    </script>
+</body>
+</html>
