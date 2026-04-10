@@ -1,0 +1,383 @@
+<!-- CREDIT TO https://codepen.io/CodeWithMalayia/pen/ByNBMPW -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fendi Reviews Food</title>
+<link rel="icon" type="image/x-icon" href="/cupcake.png">
+  <style>
+    /* Bakery-themed general styles */
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: #fff8f0;
+  color: #6b4c3b;
+  line-height: 1.6;
+}
+
+header {
+  background: #fcd6d6;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(255, 182, 193, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  margin: 0;
+  color: #a34f4f;
+  text-shadow: 1px 1px 3px #fff0f5;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  font-weight: bold;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #a34f4f;
+  padding: 8px 15px;
+  border-radius: 12px;
+  background: #ffe6e6;
+  box-shadow: 2px 2px 5px rgba(179, 101, 101, 0.4);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #a34f4f;
+  color: #fff8f0;
+  box-shadow: 2px 2px 10px #a34f4f;
+}
+
+/* Main content container */
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px 40px;
+  background: #fff0f5;
+  border-radius: 25px;
+  box-shadow: 0 8px 18px rgba(255, 182, 193, 0.4);
+}
+
+/* Section headings */
+section h2 {
+  color: #b34f4f;
+  border-bottom: 3px solid #fcbad3;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 2rem;
+  font-family: 'Lucida Handwriting', cursive;
+}
+
+/* Paragraph styling */
+p {
+  font-size: 1.1rem;
+  color: #6b4c3b;
+}
+
+/* Recipe card styling */
+.recipe-card {
+  background-color: #fff0f5;
+  padding: 20px 25px;
+  border: 2px solid #fcbad3;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+  margin-top: 20px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.recipe-card h3 {
+  color: #d65c7a;
+  margin-bottom: 15px;
+  font-family: 'Lucida Handwriting', cursive;
+  font-size: 1.8rem;
+}
+
+.recipe-card h4 {
+  color: #a34f4f;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.recipe-card ul, 
+.recipe-card ol {
+  margin-left: 25px;
+  margin-bottom: 15px;
+}
+
+.recipe-card li {
+  margin-bottom: 6px;
+}
+
+/* Food Groups App styling */
+#food-app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  background: #fff0f5;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
+}
+
+.food-app-row {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.food-app-scroll {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+#food-items .food-item {
+  flex: 0 0 auto;
+  background-color: #ffdae0;
+  border-radius: 15px;
+  padding: 15px 20px;
+  font-size: 2rem;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(179, 101, 101, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+#food-items .food-item:active {
+  cursor: grabbing;
+  background-color: #fcbad3;
+}
+
+#drop-zones {
+  justify-content: space-around;
+}
+
+.app-drop {
+  flex: 1;
+  min-width: 120px;
+  background-color: #ffe6e6;
+  border: 2px dashed #fcbad3;
+  border-radius: 20px;
+  padding: 25px 15px;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #a34f4f;
+  font-weight: 700;
+  box-shadow: inset 0 0 10px #ffd6de;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.app-drop.drag-over {
+  background-color: #fcbad3;
+  color: #fff8f0;
+  border-color: #a34f4f;
+}
+
+/* Game result */
+#game-result {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #a34f4f;
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* Baking Quiz styling */
+#baking-quiz {
+  background: #fff0f5;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(255, 182, 193, 0.4);
+  margin-top: 25px;
+}
+
+#quiz-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+#question-container {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #a34f4f;
+}
+
+#answers-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+#answers-list li {
+  background-color: #ffe6e6;
+  border-radius: 15px;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(179, 101, 101, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+#answers-list li:hover,
+#answers-list li.selected {
+  background-color: #fcbad3;
+  color: #fff8f0;
+}
+
+#submit-btn {
+  background-color: #a34f4f;
+  color: #fff8f0;
+  border: none;
+  padding: 12px 25px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#submit-btn:disabled {
+  background-color: #dca3a3;
+  cursor: not-allowed;
+}
+
+#submit-btn:hover:not(:disabled) {
+  background-color: #d65c7a;
+}
+
+/* Favorites & Challenges */
+#favorites, #challenges {
+  background: #fff0f5;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 6px 14px rgba(255, 182, 193, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #food-app-container {
+    padding: 10px;
+  }
+
+  .app-drop {
+    min-width: 100px;
+    padding: 15px 10px;
+    font-size: 1.1rem;
+  }
+}
+</style>
+</head>
+<body>
+  <header>
+    <h1>🍏 Fendi Reviews Food 🍓</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+		    <li><a href="/reviews">Reviews</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="recipes">
+      <h2>🧁 Recipes</h2>
+      <article class="recipe-card">
+        <h3>🛒🛍️✨ Where I Source Ingredients From</h3>
+        <h4>Alpha Bay</h4>
+        <ul>
+          <li>https://alpha-bay.com</li>
+          <li>"...a leading French provider of premium frozen seafood products tailored to suit the diverse needs of our B2B partners."</li>
+        </ul>
+        <h4>HANSA Food Commodities</h4>
+        <ol>
+          <li>https://hansafc.lv</li>
+          <li>"We offer a wide range of cheeses for industrial processing."</li>
+        </ol>
+        <h4>Genesis Global Market</h4>
+        <ol>
+          <li>https://genesisglobalmarket.com</li>
+          <li>"Genesis Global Market... provides an open space for a Farmers Market providing fresh locally grown fruits and vegetables... offers cultural experiences through music, art, dance, theater to enhance health, wellness and connectedness."</li>
+        </ol>
+        <p><strong>🛒🛍️✨ I VISIT THESE SOURCES OFTEN</strong></p>
+      </article>
+      <article class="recipe-card">
+        <h3>🥣 Xavier Soup Surprise </h3>
+        <h4>Inspired by <a href="https://www.jolenesrecipejournal.com/2024/11/xavier-soup.html">Jolene's Recipe Journal</a></h4>
+        <h4>Ingredients:</h4>
+        <ul>
+          <li>1 1/2 cups flour</li>
+          <li>1/2 cup heavy cream</li>
+          <li>1 stick butter</li>
+          <li>1/2 cup Parmesan cheese, grated</li>
+          <li>1/2 teaspoon salt</li>
+          <li>1/2 teaspoon pepper</li>
+          <li>1/8 teaspoon freshly grated nutmeg</li>
+          <li>2 eggs + 2 egg yolks</li>
+          <li>3 Tablespoons parsley, chopped (divided)</li>
+          <li>12 cups reduced sodium chicken broth</li>
+          <li>1 1/2 teaspoons dried tarragon</li>
+        </ul>
+        <h4>Instructions:</h4>
+        <ol>
+          <li>Over low heat, use a spoon to combine the flour, cream, butter and Parmesan cheese into a dough.</li>
+          <li>Beat together the salt, pepper, nutmeg, eggs and egg yolks and 1 tablespoon of parsley, and pour it on top of the flour mixture.</li>
+          <li>Put the mixture into a piping bag and pipe pea-sized balls onto a parchment lined tray (let it stand for about 30 minutes)</li>
+          <li>In a large pot, heat salted water until it boils.</li>
+          <li>Gently drop in all the dough peas. Cook for 5 minutes, then remove them with a slotted spoon and add to the warm chicken stock.</li>
+        </ol>
+        <p><strong>Enjoy your Xavier Soup Surprise, as .is! </strong></p>
+      </article>
+      <article class="recipe-card">
+        <h3>🫘 Abacus Seeds </h3>
+        <h4>Inspired by <a href="https://whattocooktoday.com/taro-abacus-beads-stir-fry-yu-tou-suan-pan-zi.html">Marvellina on What to Cook Today</a></h4>
+        <h4>Ingredients:</h4>
+        <ul>
+          <li>150 gr taro peeled</li>
+          <li>60 gr tapioca starch</li>
+          <li>¼ tsp salt</li>
+          <li>35 gr hot water</li>
+          <li>2 Tbsp cooking oil</li>
+          <li>100 gr ground pork</li>
+          <li>20 gr dried shrimp soak in warm water until soft</li>
+          <li>4 wood ear mushrooms soak in warm water until tripled in size and cut into strips</li>
+          <li>1 stalk green onions (white part only)</li>
+        </ul>
+        <h4>Instructions:</h4>
+        <ol>
+          <li>Cut tapioca into large chunks and steam over high heat</li>
+          <li>Mash the taro while it's still hot. Add oil, salt, tapioca starch. Gradually add in the hot water and use a spoon to stir.</li>
+          <li>Divide the dough into 4 equal balls. Work with one ball at a time while keeping the rest covered, roll the ball into long log (about 1-inch in diameter). Then cut into 1- 1.5 inch pieces. Roll each piece into a smaller ball.</li>
+          <li>Bring a large pot of water to a boil, add a pinch of salt and 1 Tbsp of cooking oil. Add in the abacus beads and stir a little bit. Remove from the heat and drain off the water.</li>
+          <li>Transfer to a bowl of cold water to stop the cooking process and to firm up the abacus beads. Toss with a little bit of oil to prevent them from sticking to each other</li>
+        </ol>
+        <p><strong>Devour your Abacus seeds, or maybe sell them at the Market! </strong></p>
+      </article>
+    </section>
+  </main>
+<script src="app.js"></script> 
+</body>
+</html>
+
