@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /under-construction
+Disallow: /
+
+# not sure if i need this, maybe take it out later? 
+Disallow: /RkxBR3t9_TO_DO_LATER.txt
